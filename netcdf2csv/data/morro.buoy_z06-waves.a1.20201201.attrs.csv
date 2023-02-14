@@ -1,0 +1,29 @@
+name,units,long_name,comment,ancillary_variables,valid_max,flag_masks,flag_meanings,flag_assessments,standard_name
+wave_type,1,Wave Type,User-programmable classification of different wave types. Wave types are not defined for this deployment,qc_wave_type,,,,,
+num_zero_crossings,1,Number of Zero Crossings,,qc_num_zero_crossings,,,,,
+mean_wave_height,m,Average Wave Height,"Wave height, average calculated from timeseries",qc_mean_wave_height,10.0,,,,
+max_wave_height,m,Maximum Wave Height,,qc_max_wave_height,10.0,,,,
+max_wave_period,s,Maximum Wave Period,,qc_max_wave_period,30.0,,,,
+max_crest_period,s,Max Crest Period,Wave period between highest wave crests,qc_max_crest_period,30.0,,,,
+mean_wave_period,s,Mean Wave Period from Spectral Moments,"Wave period, average calculated from the zeroth and first spectral moments",qc_mean_wave_period,30.0,,,,
+mean_wave_direction,degrees,Mean Wave Direction,,qc_mean_wave_direction,360.0,,,,
+mean_wave_spread,degrees,Mean Wave Spread,,qc_mean_wave_spread,360.0,,,,
+peak_wave_period,s,Peak wave period,Wave period associated with maximum energy found in wave elevation spectrum,qc_peak_wave_period,30.0,,,,
+peak_wave_direction,degrees,Peak Wave Direction,Wave direction corresponding to peak wave period,qc_peak_wave_direction,360.0,,,,
+peak_wave_spread,degrees,Peak Wave Spread,Wave spread corresponding to peak wave period,qc_peak_wave_spread,360.0,,,,
+significant_wave_height,m,Significant Wave Height,"Significant wave height, calculated from the zeroth spectral moment",qc_significant_wave_height,30.0,,,,
+wave_energy_period,s,Wave Energy Period,"Wave energy period, calculated from the negative first and zeroth spectral moments",qc_wave_energy_period,30.0,,,,
+qc_wave_type,1,Quality check results on field: Wave Type,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_num_zero_crossings,1,Quality check results on field: Number of Zero Crossings,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_mean_wave_height,1,Quality check results on field: Average Wave Height,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_max_wave_height,1,Quality check results on field: Maximum Wave Height,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_max_wave_period,1,Quality check results on field: Maximum Wave Period,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_max_crest_period,1,Quality check results on field: Max Crest Period,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_mean_wave_period,1,Quality check results on field: Mean Wave Period from Spectral Moments,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_mean_wave_direction,1,Quality check results on field: Mean Wave Direction,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_mean_wave_spread,1,Quality check results on field: Mean Wave Spread,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_peak_wave_period,1,Quality check results on field: Peak wave period,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_peak_wave_direction,1,Quality check results on field: Peak Wave Direction,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_peak_wave_spread,1,Quality check results on field: Peak Wave Spread,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_significant_wave_height,1,Quality check results on field: Significant Wave Height,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag
+qc_wave_energy_period,1,Quality check results on field: Wave Energy Period,,,,[1 2 4],"['Value is equal to _FillValue or NaN', 'Value is less than the valid_range.', 'Value is greater than the valid_range.']","['Bad', 'Bad', 'Bad']",quality_flag

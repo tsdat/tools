@@ -1,0 +1,9 @@
+title,Wave Measurements from Buoy #130 at Morro Bay, CA
+description,Pacific Northwest National Laboratory (PNNL) manages this AXYS WindSentinelTM buoy (Buoy #130) on behalf of the U.S. Department of Energy (DOE) that collect a comprehensive set of meteorological and oceanographic (metocean) data to support resource characterization for wind energy offshore. The buoy collects in-situ sea surface temperature, salinity, ocean currents, and wave data as well as near-surface air temperature, humidity, and horizontal wind speed and direction.
+location_id,morro
+dataset_name,buoy_z06
+qualifier,waves
+data_level,a1
+datastream,morro.buoy_z06-waves.a1
+history,Ran by mcve343 at 2022-06-14T11:05:34.128710
+code_version,0.4.0-post.6+1d8ab20.dirty
