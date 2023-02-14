@@ -1,0 +1,98 @@
+attrs:
+  bar: None
+  data_level: a1
+  description: Ingest of lidar data from an AXYS Technologies buoy
+  foo: excellent
+  location: Morro Bay, CA
+  name: buoy_lidar
+  qualifier: lidar
+  temporal: 10m
+  title: Buoy Lidar Pipeline
+coords:
+  height:
+    attrs:
+      long_name: Height
+      standard_name: height
+      units: m
+    dims:
+    - height
+    dtype: int
+  time:
+    attrs:
+      long_name: Time
+      standard_name: time
+      units: Seconds since 1970-01-01 00:00:00
+    dims:
+    - time
+    dtype: datetime64[ms]
+data_vars:
+  availability:
+    attrs:
+      description: Percent of good datapoints in 10 minute interval
+      long_name: Data Availability
+      units: '%'
+      valid_max: 100.0
+      valid_min: 0.0
+    dims:
+    - height
+    - time
+    dtype: float
+  cnr:
+    attrs:
+      description: Signal to noise ratio of carrier beam
+      long_name: Carrier Noise Ratio
+      units: dB
+    dims:
+    - height
+    - time
+    dtype: float
+  dopp_spec_broad:
+    attrs:
+      description: "Lidar spectral broadening due to the\_Doppler\_effect, caused\
+        \ by a distribution of particle velocity"
+      long_name: Dopper Spectral Broadening
+      units: m/s
+    dims:
+    - height
+    - time
+    dtype: float
+  pressure:
+    attrs:
+      long_name: Pressure
+      standard_name: air_pressure
+      units: kPa
+      valid_max: 1100.0
+      valid_min: 900.0
+    dims:
+    - time
+    dtype: float
+  wind_direction:
+    attrs:
+      long_name: Wind Direction
+      standard_name: wind_speed_from_direction
+      units: deg
+      valid_max: 360.0
+      valid_min: 0.0
+    dims:
+    - height
+    - time
+    dtype: float
+  wind_speed:
+    attrs:
+      long_name: Wind Speed
+      standard_name: wind_speed
+      units: m/s
+      valid_min: 0.0
+    dims:
+    - height
+    - time
+    dtype: float
+  z_wind:
+    attrs:
+      long_name: Vertical Wind Speed
+      standard_name: upward_air_velocity
+      units: m/s
+    dims:
+    - height
+    - time
+    dtype: float
