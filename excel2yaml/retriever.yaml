@@ -29,3 +29,8 @@ data_vars:
 readers:
   .*:
     classname: tsdat.io.readers.CSVReader
+    parameters:
+      read_csv_kwargs:
+        header: 0
+        index_col: false
+        skiprows: 2
