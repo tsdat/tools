@@ -69,6 +69,7 @@ def _get_reader_classname(datapath: Path, interactive: bool = False) -> str:
         ".csv": "tsdat.CSVReader",
         ".parquet": "tsdat.ParquetReader",
         ".pq": "tsdat.ParquetReader",
+        ".pqt": "tsdat.ParquetReader",
         ".zarr": "tsdat.ZarrReader",
     }
     reader = defaults.get(datapath.suffix, "NA")
