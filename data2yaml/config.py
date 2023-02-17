@@ -167,8 +167,8 @@ def _build_retriever_config(
     retriever_config = dict(
         classname="tsdat.DefaultRetriever",
         readers={".*": {"classname": reader_classname}},
-        coords={v.output_name: v.input_name for v in coords},
-        data_vars={v.output_name: v.input_name for v in variables},
+        coords={v.output_name: {"name": v.input_name} for v in coords},
+        data_vars={v.output_name: {"name": v.input_name} for v in variables},
     )
     return retriever_config
 
