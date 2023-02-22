@@ -1,5 +1,4 @@
-tsdat>=0.5
+tsdat>=0.5.0
 pydantic
-pyyaml
 ruamel.yaml
 typer

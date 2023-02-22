@@ -20,16 +20,11 @@ yaml = ruamel.yaml.YAML()
 def from_data(
     datapath: Path = typer.Argument(
         ...,
-        # exists=True,
+        exists=True,
         file_okay=True,
         dir_okay=True,  # Only for Zarr
         help="Path to the input data file that should be used to generate tsdat"
         " configurations.",
-    ),
-    interactive: bool = typer.Option(
-        True,
-        is_flag=True,
-        help="Generate config files interactively.",
     ),
     outdir: Path = typer.Option(
         Path(),
@@ -47,7 +42,7 @@ def from_data(
         " over auto-detected properties in the input file.",
     ),
 ):
-    reader_classname = _get_reader_classname(datapath, interactive=interactive)
+    reader_classname = _get_reader_classname(datapath)
     reader = _instantiate_reader(reader_classname)
 
     ds = _get_dataset(reader, datapath)
@@ -62,7 +57,7 @@ def from_data(
     return
 
 
-def _get_reader_classname(datapath: Path, interactive: bool = False) -> str:
+def _get_reader_classname(datapath: Path) -> str:
     defaults = {
         ".nc": "tsdat.NetCDFReader",
         ".cdf": "tsdat.NetCDFReader",
@@ -73,12 +68,8 @@ def _get_reader_classname(datapath: Path, interactive: bool = False) -> str:
         ".zarr": "tsdat.ZarrReader",
     }
     reader = defaults.get(datapath.suffix, "NA")
-    if interactive and (
-        reader == "NA"
-        or not Confirm.ask(
-            f"Use default reader: {reader}", default=True, console=console
-        )
-    ):
+    if reader == "NA":
+        console.print(f"Could not auto-detect reader to use for file {datapath}")
         reader = Prompt.ask(
             "Enter the module path to the DataReader to use", console=console
         )

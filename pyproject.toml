@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsdat-tools"
+authors = [
+  { name="Maxwell Levin", email="24307537+maxwelllevin@users.noreply.github.com"},
+  { name="James McVey", email="53623232+jmcvey3@users.noreply.github.com"},
+]
+description = "Utility scripts and tools for tsdat."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["tsdat", "utils", "config"]
+license = {text = "BSD 3-Clause License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+version = {attr = "tools.__version__"}
+dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+tsdat-tools = "tools.main:app"
+
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tools = ["py.typed"]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/tools/_version.py"
