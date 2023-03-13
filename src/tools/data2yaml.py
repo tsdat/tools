@@ -100,6 +100,17 @@ def _get_dataset(reader: DataReader, datapath: Path) -> xr.Dataset:
     return data
 
 
+def _convert_numpy_dtypes(attrs):
+    out = dict.fromkeys(attrs.keys())
+    for k, v in attrs.items():
+        if type(v).__module__=='numpy':
+            # converts numpy class to equivalent python class
+            out[k] = v.tolist() 
+        else:
+            out[k] = v
+    return out
+
+ 
 def slugify(name: str) -> str:
     # https://stackoverflow.com/a/1176023/15641512
     name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
@@ -179,11 +190,12 @@ def _build_dataset_config(
         cs.fa.set_flow_style()
         return cs
 
+    attrs = _convert_numpy_dtypes(attrs)
     coords = {
         v.output_name: {
             "dims": to_condensed_list([slugify(d) for d in v.input_dims]),
             "dtype": v.dtype,
-            "attrs": v.attrs,
+            "attrs": _convert_numpy_dtypes(v.attrs),
         }
         for v in coordinates
     }
@@ -191,7 +203,7 @@ def _build_dataset_config(
         v.output_name: {
             "dims": to_condensed_list([slugify(d) for d in v.input_dims]),
             "dtype": v.dtype,
-            "attrs": v.attrs,
+            "attrs": _convert_numpy_dtypes(v.attrs),
         }
         for v in variables
     }
