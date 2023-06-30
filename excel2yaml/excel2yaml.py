@@ -57,7 +57,7 @@ def config_file_converter(fpath):
             if 'time' in name:
                 d = {'data_converters': [{'classname': 'tsdat.io.converters.StringToDatetime',
                                           'format': old_unit,
-                                          'timezone': 'UTC',
+                                          'timezone': dc['Timezone'][i],
                                           }]
                     }
             else:
@@ -90,13 +90,24 @@ def config_file_converter(fpath):
                                         }
                                 })
 
-        var_list = ['long_name','standard_name','description','valid_min','valid_max']
+        qc_vars = list(dv.columns[11:])
+        var_list = ['long_name','standard_name','description','valid_min','valid_max'] + qc_vars
         attrs = dict.fromkeys(var_list)
         attrs['long_name'] = dv['Long Name'][i]
         attrs['standard_name'] = dv['Standard Name'][i]
         attrs['description'] = dv['Description'][i]
         attrs['valid_min'] = dv['Valid Minimum Value'][i]
         attrs['valid_max'] = dv['Valid Maximum Value'][i]
+        for v in qc_vars:
+            val = dv[v][i]
+            if np.isnan(val):
+                attrs[v] = None
+            elif isinstance(val, float):  # number
+                attrs[v] = float(val)
+            else:  # string
+                attrs[v] = val
+
+        # Check type is compatibly with yaml format
         type_list = [str, int, np.ndarray, float, list, tuple]
         for v in var_list:
             if type(attrs[v]) in type_list:

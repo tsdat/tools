@@ -40,10 +40,10 @@ additional metadata. These inputs are described in tables below:
 |Original Name    |Name of variable in raw input file               |
 |Standardized Unit|New variable unit                                |
 |Original Unit    |Variable unit in raw input file                  |
+|Timezone         |Timezone identifier, specifically for "time" variables, from [TZ database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)      |
 |Datatype         |Variable datatype (e.g. "float32")               |
 |Long Name        |"Human readable" version of variable name        |
 |Standard Name    |Name of variable from [CF conventions lookup table](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)|
-|Timezone         |Timezone, specifically for "time" variables      |
 
 Note: A [list of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) is available on wikipedia, under the 
 column labeled "TZ database name".
@@ -62,3 +62,5 @@ column labeled "TZ database name".
 |Description      |Optional, additional information for the variable. Good to use if a standard name isn't available |
 |Valid Minimum Value |Lower range limit expected for a variable, for quality control|
 |Valid Maximum Value |Upper range limit expected for a variable, for quality control|
+|<new_qc_parameter>  |                                                 |
+|<new_qc_parameter>  |                                                 |
