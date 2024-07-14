@@ -1,4 +1,6 @@
 tsdat>=0.7.0
-pydantic
+pydantic<2.0.0
 ruamel.yaml
 typer
+openpyxl
+pandas

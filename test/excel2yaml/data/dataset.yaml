@@ -1,0 +1,88 @@
+attrs:
+  title: Buoy Lidar Pipeline
+  description: Ingest of lidar data from an AXYS Technologies buoy
+  location: Morro Bay, CA
+  location_id: morro_bay_ca
+  dataset_name: lidar
+  data_level: a1
+  Foo: Bar
+  qualifier: lidar
+  temporal: 10m
+
+coords:
+  time:
+    dims: [time]
+    dtype: datetime64[ns]
+    attrs:
+      long_name: Time
+      standard_name: time
+      units: Seconds since 1970-01-01 00:00:00
+      timezone: US/Pacific
+  height:
+    dims: [height]
+    dtype: int
+    attrs:
+      long_name: Height
+      standard_name: height
+      units: m
+
+data_vars:
+  wind_speed:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Wind Speed
+      standard_name: wind_speed
+      units: m/s
+      valid_delta: 0.5
+      valid_min: 0.0
+  wind_direction:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Wind Direction
+      standard_name: wind_speed_from_direction
+      units: deg
+      valid_min: 0.0
+      valid_max: 360.0
+  z_wind:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Vertical Wind Speed
+      standard_name: upward_air_velocity
+      units: m/s
+      valid_delta: 0.5
+  CNR:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Carrier Noise Ratio
+      units: dB
+      description: Signal to noise ratio of carrier beam
+  dopp_spec_broad:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Doppler Spectral Broadening
+      units: m/s
+      description: Lidar spectral broadening due to the Doppler effect, caused by
+        a distribution of particle velocity
+  availability:
+    dims: [time, height]
+    dtype: float
+    attrs:
+      long_name: Data Availability
+      units: '%'
+      description: Percent of good data points in 10 minute interval
+      valid_min: 0.0
+      valid_max: 100.0
+  pressure:
+    dims: [time]
+    dtype: float
+    attrs:
+      long_name: Pressure
+      standard_name: air_pressure
+      units: kPa
+      valid_min: 900.0
+      valid_max: 1100.0

@@ -12,3 +12,11 @@ htmlcov/
 .vscode/
 
 _version.py
+
+.mypy_cache/
+
+data/
+!test/**/data
+
+# Prefix when opening an excel file in MS Excel, e.g., ~$template.xlsx
+~$*

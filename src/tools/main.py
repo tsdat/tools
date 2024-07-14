@@ -2,7 +2,7 @@ import typer
 
 from ._version import __version__
 from .data2yaml import from_data
-from .excel2yaml import config_file_converter
+from .excel2yaml.cli import excel_to_yaml
 
 app = typer.Typer(add_completion=False)
 
@@ -14,7 +14,7 @@ app.command(
 app.command(
     name="excel2yaml",
     help="Generate configuration files from an excel file.",
-)(config_file_converter)
+)(excel_to_yaml)
 
 
 @app.command()
