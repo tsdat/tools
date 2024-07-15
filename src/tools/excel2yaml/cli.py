@@ -1,3 +1,5 @@
+import importlib.resources as pkg_resources
+import shutil
 from pathlib import Path
 
 import typer
@@ -14,7 +16,7 @@ app = typer.Typer()
 
 
 @app.command()
-def excel_to_yaml(
+def run(
     filepath: Annotated[
         Path,
         typer.Argument(
@@ -49,6 +51,26 @@ def excel_to_yaml(
 
     write_yaml(dataset_cfg, output_dir / "dataset.yaml")
     write_yaml(retriever_cfg, output_dir / "retriever.yaml")
+
+
+@app.command()
+def init(
+    output_path: Annotated[
+        Path,
+        typer.Argument(
+            file_okay=True,
+            dir_okay=False,
+            writable=True,
+            help="Where to save the excel template.",
+        ),
+    ] = Path("./template.xlsx"),
+):
+    import tools.excel2yaml as excel2yaml_package
+
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+    with pkg_resources.path(excel2yaml_package, "template.xlsx") as template_path:
+        shutil.copy(template_path, output_path)
+        print(f"Wrote template to {output_path.as_posix()}")
 
 
 if __name__ == "__main__":

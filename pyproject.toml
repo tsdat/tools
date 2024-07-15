@@ -33,7 +33,7 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-tools = ["py.typed"]
+tools = ["py.typed", "excel2yaml/template.xlsx"]
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"

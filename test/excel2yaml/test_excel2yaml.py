@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from tools.excel2yaml.cli import app
+from tools.main import app
 from tsdat.config.dataset import DatasetConfig
 from tsdat.config.retriever import RetrieverConfig
 from typer.testing import CliRunner
@@ -8,26 +8,41 @@ from typer.testing import CliRunner
 runner = CliRunner()
 
 
-def test_excel2yaml():
+def _load_dataset_cfg(cfg_path: str) -> DatasetConfig:
+    path = Path(cfg_path)
+    assert path.exists()
+    return DatasetConfig.from_yaml(path)
+
+
+def _load_retriever_cfg(cfg_path: str) -> RetrieverConfig:
+    path = Path(cfg_path)
+    assert path.exists()
+    return RetrieverConfig.from_yaml(path)
+
+
+def test_excel2yaml_generates_excel_template():
+    result = runner.invoke(app, ["excel2yaml", "init", "data/excel2yaml/template.xlsx"])
+    assert result.exit_code == 0, result.stdout
+    assert Path("data/excel2yaml/template.xlsx").exists()
+
+
+def test_excel2yaml_generates_config_files():
     result = runner.invoke(
         app,
-        ["src/tools/excel2yaml/template.xlsx", "--output-dir", "data/excel2yaml"],
+        [
+            "excel2yaml",
+            "run",
+            "src/tools/excel2yaml/template.xlsx",
+            "--output-dir",
+            "data/excel2yaml",
+        ],
     )
     assert result.exit_code == 0, result.stdout
 
-    output_dataset_cfg_path = Path("data/excel2yaml/dataset.yaml")
-    output_retriever_cfg_path = Path("data/excel2yaml/retriever.yaml")
-    assert output_dataset_cfg_path.exists()
-    assert output_retriever_cfg_path.exists()
-    output_dataset = DatasetConfig.from_yaml(output_dataset_cfg_path)
-    output_retriever = RetrieverConfig.from_yaml(output_retriever_cfg_path)
+    output_dataset_cfg = _load_dataset_cfg("data/excel2yaml/dataset.yaml")
+    expected_dataset_cfg = _load_dataset_cfg("test/excel2yaml/data/dataset.yaml")
+    assert output_dataset_cfg == expected_dataset_cfg
 
-    expected_dataset_cfg_path = Path("test/excel2yaml/data/dataset.yaml")
-    expected_retriever_cfg_path = Path("test/excel2yaml/data/retriever.yaml")
-    assert expected_dataset_cfg_path.exists()
-    assert expected_retriever_cfg_path.exists()
-    expected_dataset = DatasetConfig.from_yaml(expected_dataset_cfg_path)
-    expected_retriever = RetrieverConfig.from_yaml(expected_retriever_cfg_path)
-
-    assert output_dataset == expected_dataset
-    assert output_retriever == expected_retriever
+    output_retriever_cfg = _load_retriever_cfg("data/excel2yaml/retriever.yaml")
+    expected_retriever_cfg = _load_retriever_cfg("test/excel2yaml/data/retriever.yaml")
+    assert output_retriever_cfg == expected_retriever_cfg
