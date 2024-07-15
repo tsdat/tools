@@ -12,10 +12,17 @@ from .get_retriever_config import get_retriever_config
 from .independent_variable import IndependentVariable
 from .write_yaml import write_yaml
 
-app = typer.Typer()
+app = typer.Typer(
+    no_args_is_help=True,
+    help=(
+        "Generate tsdat config files from an excel template. Run `tsdat-tools"
+        " excel2yaml init` to get the template, then run `tsdat-tools excel2yaml run"
+        " /path/to/template.xlsx` to generate the config files."
+    ),
+)
 
 
-@app.command()
+@app.command(help="Generates tsdat config files from the completed excel template.")
 def run(
     filepath: Annotated[
         Path,
@@ -25,7 +32,7 @@ def run(
             dir_okay=False,
             help="The path to the excel file to read.",
         ),
-    ],
+    ] = Path("./template.xlsx"),
     output_dir: Annotated[
         Path,
         typer.Option(
@@ -36,10 +43,13 @@ def run(
         ),
     ] = Path("config/"),
 ):
+    print("Loading excel file... ", end="")
     metadata = DatasetMetadata.from_sheet(filepath)
     independent_vars = IndependentVariable.from_sheet(filepath)
     dependent_vars = DependentVariable.from_sheet(filepath)
+    print("done!")
 
+    print("Converting to tsdat configs... ", end="")
     dataset_cfg = get_dataset_config(
         metadata=metadata,
         independent_variables=independent_vars,
@@ -48,12 +58,18 @@ def run(
     retriever_cfg = get_retriever_config(
         independent_variables=independent_vars, dependent_variables=dependent_vars
     )
+    print("done!")
 
-    write_yaml(dataset_cfg, output_dir / "dataset.yaml")
-    write_yaml(retriever_cfg, output_dir / "retriever.yaml")
+    dataset_path = output_dir / "dataset.yaml"
+    retriever_path = output_dir / "retriever.yaml"
+    write_yaml(dataset_cfg, dataset_path)
+    write_yaml(retriever_cfg, retriever_path)
+    print(f"wrote {dataset_path}")
+    print(f"wrote {retriever_path}")
+    print("done!")
 
 
-@app.command()
+@app.command(help="Generates the excel template.")
 def init(
     output_path: Annotated[
         Path,

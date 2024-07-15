@@ -14,11 +14,7 @@ app.command(
 app.add_typer(
     excel2yaml,
     name="excel2yaml",
-    help=(
-        "Generate tsdat config files from an excel template. Run `tsdat-tools"
-        " excel2yaml init` to get the template, then run `tsdat-tools excel2yaml run"
-        " /path/to/template.xlsx` to generate the config files."
-    ),
+    help="Generate tsdat config files from an excel template.",
 )
 
 
