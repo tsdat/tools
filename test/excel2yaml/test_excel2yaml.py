@@ -1,9 +1,10 @@
 from pathlib import Path
 
-from tools.main import app
 from tsdat.config.dataset import DatasetConfig
 from tsdat.config.retriever import RetrieverConfig
 from typer.testing import CliRunner
+
+from tsdat_tools.main import app
 
 runner = CliRunner()
 
@@ -32,7 +33,7 @@ def test_excel2yaml_generates_config_files():
         [
             "excel2yaml",
             "run",
-            "src/tools/excel2yaml/template.xlsx",
+            "tsdat_tools/excel2yaml/template.xlsx",
             "--output-dir",
             "data/excel2yaml",
         ],
