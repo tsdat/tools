@@ -81,7 +81,7 @@ def init(
         ),
     ] = Path("./template.xlsx"),
 ):
-    import tsdat_tools.excel2yaml as excel2yaml_package
+    import tools.excel2yaml as excel2yaml_package
 
     output_path.parent.mkdir(exist_ok=True, parents=True)
     with pkg_resources.path(excel2yaml_package, "template.xlsx") as template_path:

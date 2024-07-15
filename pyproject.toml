@@ -5,32 +5,36 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tsdat-tools"
 authors = [
-  { name="tsdat", email="tsdat@pnnl.gov"},
+  { name="Maxwell Levin", email="24307537+maxwelllevin@users.noreply.github.com"},
+  { name="James McVey", email="53623232+jmcvey3@users.noreply.github.com"},
 ]
 description = "Utility scripts and tools for tsdat."
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["tsdat", "utils", "config"]
 license = {text = "BSD 3-Clause License"}
-classifiers = ["Programming Language :: Python :: 3"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
 dynamic = ["version", "dependencies"]
 
 [tool.setuptools.dynamic]
-version = {attr = "tsdat_tools.__version__"}
+version = {attr = "tools.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
 [project.scripts]
-tsdat-tools = "tsdat_tools.main:app"
+tsdat-tools = "tools.main:app"
+
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["tsdat_tools"]
+where = ["src"]
 
 [tool.setuptools.package-data]
 tools = ["py.typed", "excel2yaml/template.xlsx"]
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
-write_to = "tsdat_tools/_version.py"
+write_to = "src/tools/_version.py"
