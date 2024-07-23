@@ -6,10 +6,11 @@ import ruamel.yaml
 import typer
 import xarray as xr
 from pydantic import Field, dataclasses, validator
+from pydantic.fields import ModelField
 from rich.console import Console
-from rich.prompt import Confirm, Prompt
-from tsdat.config.utils import recursive_instantiate
-from tsdat.io.base import DataReader
+from rich.prompt import Prompt
+from tsdat.config.utils.recursive_instantiate import recursive_instantiate
+from tsdat.io.base.data_reader import DataReader
 
 app = typer.Typer()
 console = Console()
@@ -41,20 +42,41 @@ def from_data(
         " derived from the input data file. Configurations defined here take priority"
         " over auto-detected properties in the input file.",
     ),
-):
+) -> None:
     reader_classname = _get_reader_classname(datapath)
     reader = _instantiate_reader(reader_classname)
 
     ds = _get_dataset(reader, datapath)
-    attrs = ds.attrs
+    attrs = _get_attrs(ds)
     coords = _resolve_variables_and_metadata(ds.coords)
     variables = _resolve_variables_and_metadata(ds.data_vars)
 
     retriever_config = _build_retriever_config(reader_classname, coords, variables)
     dataset_config = _build_dataset_config(input_config, attrs, coords, variables)
+    
+    outdir.mkdir(exist_ok=True, parents=True)
     yaml.dump(retriever_config, outdir / "retriever.yaml")
     yaml.dump(dataset_config, outdir / "dataset.yaml")
-    return
+    return None
+
+
+def clean_attribute_value(att_name: str, att_value: Any):
+    # Define the regex pattern for control characters, non-printable characters, and
+    # non-ASCII characters
+    if not isinstance(att_value, str):
+        return att_value
+    prohibited_pattern = re.compile(r"[\x00-\x1F\x7F-\xFF]")
+    if prohibited_pattern.search(att_value) is not None:
+        print(
+            (
+                f"Warning: Attribute {att_name} value '{att_value}' contains prohibited"
+                " characters. Stripping non-ascii, control, and special characters"
+                " prohibited by netCDF. Manual review recommended."
+            )
+        )
+        cleaned_value = prohibited_pattern.sub("", att_value)
+        return cleaned_value
+    return att_value
 
 
 def _get_reader_classname(datapath: Path) -> str:
@@ -100,17 +122,24 @@ def _get_dataset(reader: DataReader, datapath: Path) -> xr.Dataset:
     return data
 
 
+def _get_attrs(dataset: xr.Dataset) -> dict[str, Any]:
+    """Gets the attributes from the dataset and strips special characters that are not
+    allowed in netcdf"""
+    attrs = {k: clean_attribute_value(k, v) for k, v in dataset.attrs.items()}
+    return attrs  # type: ignore
+
+
 def _convert_numpy_dtypes(attrs):
     out = dict.fromkeys(attrs.keys())
     for k, v in attrs.items():
-        if type(v).__module__=='numpy':
+        if type(v).__module__ == "numpy":
             # converts numpy class to equivalent python class
-            out[k] = v.tolist() 
+            out[k] = v.tolist()
         else:
             out[k] = v
     return out
 
- 
+
 def slugify(name: str) -> str:
     # https://stackoverflow.com/a/1176023/15641512
     name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
@@ -127,28 +156,30 @@ class VariableConfig:
     attrs: Dict[str, Any] = Field(default_factory=dict)
     input_dims: List[str] = Field(default_factory=list)
 
-    @validator("attrs")
-    def strip_whitespace(cls, attrs: Dict[str, Any]) -> Dict[str, Any]:
-        updated_atts: Dict[str, Any] = {}
-        for att_name, att_val in attrs.items():
-            att_name = att_name.strip()
-            if isinstance(att_val, str):
-                att_val = att_val.strip()
-            if att_val == "":
-                continue
-            updated_atts[att_name] = att_val
-        return updated_atts
+    # @validator("attrs")
+    # def strip_whitespace(cls, attrs: Dict[str, Any]) -> Dict[str, Any]:
+    #     updated_atts: Dict[str, Any] = {}
+    #     for att_name, att_val in attrs.items():
+    #         att_name = att_name.strip()
+    #         if isinstance(att_val, str):
+    #             att_val = att_val.strip()
+    #         if att_val == "":
+    #             continue
+    #         updated_atts[att_name] = att_val
+    #     return updated_atts
 
-    @validator("attrs")
-    def fix_units(cls, attrs: Dict[str, Any]) -> Dict[str, Any]:
-        if "units" in attrs:
-            attrs["units"] = attrs["units"].replace("°", "deg")
-            attrs["units"] = attrs["units"].replace("¹", "1")
-        return attrs
+    # @validator("attrs", pre=False)
+    # def fix_attrs(cls, attrs: Dict[str, Any], field: ModelField) -> Dict[str, Any]:
+    #     if "units" in attrs:
+    #         attrs["units"] = attrs["units"].replace("°", "deg")
+    #         attrs["units"] = attrs["units"].replace("¹", "1")
+    #     attrs = {k: clean_attribute_value(k, v) for k, v in attrs.items()}
+    #     print(attrs)
+    #     return attrs
 
 
 def _resolve_variables_and_metadata(
-    variables: Mapping[Hashable, xr.DataArray]
+    variables: Mapping[Hashable, xr.DataArray],
 ) -> List[VariableConfig]:
     resolved: List[VariableConfig] = []
     for name, data in variables.items():
@@ -208,10 +239,9 @@ def _build_dataset_config(
         for v in variables
     }
 
+    dataset_config: Dict[str, Any] = {}  # type: ignore
     if existing_config_path is not None:
-        dataset_config = yaml.load(existing_config_path.open("r"))
-    else:
-        dataset_config: Dict[str, Any] = {}
+        dataset_config.update(yaml.load(existing_config_path.open("r")))
     dataset_config["attrs"] = {**attrs, **dataset_config.get("attrs", {})}
     dataset_config["coords"] = {**coords, **dataset_config.get("coords", {})}
     dataset_config["data_vars"] = {**data_vars, **dataset_config.get("data_vars", {})}
