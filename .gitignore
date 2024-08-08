@@ -18,5 +18,7 @@ _version.py
 data/
 !test/**/data
 
+**/.DS_STORE
+
 # Prefix when opening an excel file in MS Excel, e.g., ~$template.xlsx
 ~$*

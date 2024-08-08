@@ -11,7 +11,7 @@ def _get_coord_attrs(coord: IndependentVariable) -> dict[str, Any]:
         long_name=coord.long_name,
         standard_name=coord.standard_name,
         units=coord.new_unit,
-        timezone=coord.timezone,
+        timezone="UTC" if coord.timezone is not None else None,
         **coord.additional_metadata,
     )
     attrs = {k: v for k, v in attrs.items() if v is not None}
