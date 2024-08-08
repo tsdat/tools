@@ -36,15 +36,17 @@ data_vars:
       units: m/s
       valid_delta: 0.5
       valid_min: 0.0
+      primary_measurement: true
   wind_direction:
     dims: [time, height]
     dtype: float
     attrs:
       long_name: Wind Direction
-      standard_name: wind_speed_from_direction
+      standard_name: wind_from_direction
       units: deg
       valid_min: 0.0
       valid_max: 360.0
+      primary_measurement: true
   z_wind:
     dims: [time, height]
     dtype: float
@@ -53,11 +55,12 @@ data_vars:
       standard_name: upward_air_velocity
       units: m/s
       valid_delta: 0.5
-  CNR:
+      primary_measurement: true
+  cnr:
     dims: [time, height]
     dtype: float
     attrs:
-      long_name: Carrier Noise Ratio
+      long_name: Carrier to Noise Ratio
       units: dB
       description: Signal to noise ratio of carrier beam
   dopp_spec_broad:

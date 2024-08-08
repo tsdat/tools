@@ -21,7 +21,7 @@ data_vars:
     name: Wind Direction (deg)
   z_wind:
     name: Z-wind (m/s)
-  CNR:
+  cnr:
     name: CNR (dB)
   dopp_spec_broad:
     name: Dopp Spect Broad (m/s)

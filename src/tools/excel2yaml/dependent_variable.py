@@ -18,6 +18,7 @@ class DependentVariable:
     description: str | None = None
     long_name: str | None = None
     standard_name: str | None = None
+    primary_measurement: bool = False
     valid_min: float | None = None
     valid_max: float | None = None
     valid_delta: float | None = None
@@ -45,6 +46,7 @@ class DependentVariable:
                     dimensions_str=row_data.pop("Dimensions", None),
                     long_name=row_data.pop("Long Name", None),
                     standard_name=row_data.pop("Standard Name", None),
+                    primary_measurement=row_data.pop("Primary Measurement", False),
                     description=row_data.pop("Description", None),
                     valid_min=row_data.pop("Valid Minimum Value", None),
                     valid_max=row_data.pop("Valid Maximum Value", None),

@@ -30,6 +30,8 @@ def _get_data_var_attrs(data_var: DependentVariable) -> dict[str, Any]:
         **data_var.additional_metadata,
     )
     attrs = {k: v for k, v in attrs.items() if v is not None}
+    if data_var.primary_measurement:
+        attrs.update(primary_measurement=True)
     return attrs
 
 

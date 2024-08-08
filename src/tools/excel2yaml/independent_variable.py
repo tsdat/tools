@@ -35,7 +35,7 @@ class IndependentVariable:
                     old_name=row_data.pop("Original Name", None),
                     new_unit=row_data.pop("Standardized Unit", None),
                     old_unit=row_data.pop("Original Unit", None),
-                    timezone=row_data.pop("Timezone", None),
+                    timezone=row_data.pop("Original Timezone", None),
                     dtype=row_data.pop("Datatype", None),
                     long_name=row_data.pop("Long Name", None),
                     standard_name=row_data.pop("Standard Name", None),
