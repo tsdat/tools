@@ -16,8 +16,7 @@ coords:
     attrs:
       long_name: Time
       standard_name: time
-      units: Seconds since 1970-01-01 00:00:00
-      timezone: UTC
+      units: Seconds since 1970-01-01 00:00:00 UTC
   height:
     dims: [height]
     dtype: int

@@ -4,6 +4,16 @@ from .dataset_metadata import DatasetMetadata
 from .dependent_variable import DependentVariable
 from .independent_variable import IndependentVariable
 from .ruamel_styles import ListInline
+from .time_variable import TimeVariable
+
+
+def _get_time_attrs(time: TimeVariable) -> dict[str, Any]:
+    attrs = dict(
+        long_name=time.long_name,
+        standard_name=time.standard_name,
+        units=time.units,
+    )
+    return attrs
 
 
 def _get_coord_attrs(coord: IndependentVariable) -> dict[str, Any]:
@@ -11,7 +21,6 @@ def _get_coord_attrs(coord: IndependentVariable) -> dict[str, Any]:
         long_name=coord.long_name,
         standard_name=coord.standard_name,
         units=coord.new_unit,
-        timezone="UTC" if coord.timezone is not None else None,
         **coord.additional_metadata,
     )
     attrs = {k: v for k, v in attrs.items() if v is not None}
@@ -37,10 +46,18 @@ def _get_data_var_attrs(data_var: DependentVariable) -> dict[str, Any]:
 
 def get_dataset_config(
     metadata: DatasetMetadata,
+    time_variable: TimeVariable,
     independent_variables: list[IndependentVariable],
     dependent_variables: list[DependentVariable],
 ) -> dict[str, Any]:
     attrs = metadata.to_dict()
+    time_coord = {
+        time_variable.new_name: dict(
+            dims=ListInline([time_variable.new_name]),
+            dtype=time_variable.dtype,
+            attrs=_get_time_attrs(time_variable),
+        )
+    }
     coords = {
         c.new_name: dict(
             dims=ListInline([c.new_name]),
@@ -59,7 +76,7 @@ def get_dataset_config(
     }
     cfg = dict(
         attrs=attrs,
-        coords=coords,
+        coords={**time_coord, **coords},
         data_vars=data_vars,
     )
     return cfg

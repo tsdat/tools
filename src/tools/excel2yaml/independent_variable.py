@@ -13,7 +13,6 @@ class IndependentVariable:
     dtype: str
     new_unit: str = "1"
     old_unit: str = "1"
-    timezone: str | None = None
     long_name: str | None = None
     standard_name: str | None = None
     additional_metadata: dict[str, Any] = field(default_factory=dict)
@@ -24,7 +23,7 @@ class IndependentVariable:
 
     @classmethod
     def from_sheet(cls, filepath: str | Path) -> list[Self]:
-        sheet = pd.read_excel(filepath, sheet_name="Independent Variables", header=1)
+        sheet = pd.read_excel(filepath, sheet_name="Independent Variables", header=6)
         data = sheet.where(pd.notnull(sheet), None).to_dict(orient="records")
         variables: list[Self] = []
         for row in data:
@@ -35,7 +34,6 @@ class IndependentVariable:
                     old_name=row_data.pop("Original Name", None),
                     new_unit=row_data.pop("Standardized Unit", None),
                     old_unit=row_data.pop("Original Unit", None),
-                    timezone=row_data.pop("Original Timezone", None),
                     dtype=row_data.pop("Datatype", None),
                     long_name=row_data.pop("Long Name", None),
                     standard_name=row_data.pop("Standard Name", None),

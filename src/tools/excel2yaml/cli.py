@@ -5,6 +5,8 @@ from pathlib import Path
 import typer
 from typing_extensions import Annotated
 
+from tools.excel2yaml.time_variable import TimeVariable
+
 from .dataset_metadata import DatasetMetadata
 from .dependent_variable import DependentVariable
 from .get_dataset_config import get_dataset_config
@@ -45,6 +47,7 @@ def run(
 ):
     print("Loading excel file... ", end="")
     metadata = DatasetMetadata.from_sheet(filepath)
+    time_var = TimeVariable.from_sheet(filepath)
     independent_vars = IndependentVariable.from_sheet(filepath)
     dependent_vars = DependentVariable.from_sheet(filepath)
     print("done!")
@@ -52,11 +55,14 @@ def run(
     print("Converting to tsdat configs... ", end="")
     dataset_cfg = get_dataset_config(
         metadata=metadata,
+        time_variable=time_var,
         independent_variables=independent_vars,
         dependent_variables=dependent_vars,
     )
     retriever_cfg = get_retriever_config(
-        independent_variables=independent_vars, dependent_variables=dependent_vars
+        time_variable=time_var,
+        independent_variables=independent_vars,
+        dependent_variables=dependent_vars,
     )
     print("done!")
 
