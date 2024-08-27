@@ -1,2 +1,4 @@
 setuptools_scm
 build
+coverage
+pytest

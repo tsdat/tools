@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Utility scripts and tools for tsdat."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 keywords = ["tsdat", "utils", "config"]
 license = {text = "BSD 3-Clause License"}
 classifiers = [
@@ -33,7 +33,7 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-tools = ["py.typed"]
+tools = ["py.typed", "excel2yaml/template.xlsx"]
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"

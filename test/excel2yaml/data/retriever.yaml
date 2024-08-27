@@ -1,0 +1,34 @@
+classname: tsdat.DefaultRetriever
+
+readers:
+  .*:
+    classname: tsdat.NetCDFReader
+
+coords:
+  time:
+    name: Timestamp (end of interval)
+    data_converters:
+    - classname: tsdat.io.converters.StringToDatetime
+      format: '%Y-%m-%d %H:%M:%S'
+      timezone: US/Pacific
+  height:
+    name: Height
+
+data_vars:
+  wind_speed:
+    name: Wind Speed (m/s)
+  wind_direction:
+    name: Wind Direction (deg)
+  z_wind:
+    name: Z-wind (m/s)
+  cnr:
+    name: CNR (dB)
+  dopp_spec_broad:
+    name: Dopp Spect Broad (m/s)
+  availability:
+    name: Data Availability (%)
+  pressure:
+    name: Pressure (hPa)
+    data_converters:
+    - classname: tsdat.io.converters.UnitsConverter
+      input_units: hPa
