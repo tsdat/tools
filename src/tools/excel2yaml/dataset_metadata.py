@@ -28,8 +28,9 @@ class DatasetMetadata:
     @classmethod
     def from_sheet(cls, filepath: str | Path) -> Self:
         sheet = pd.read_excel(filepath, sheet_name="Metadata", header=1)
-        df = sheet[["Metadata Label", "Value"]].set_index("Metadata Label")
-        df = df.where(pd.notnull(df), None)
+        df = sheet[["Metadata Label", "Value"]]
+        df.loc[:, "Metadata Label"] = df["Metadata Label"].str.strip()
+        df = df[df["Metadata Label"].str.len() > 0].set_index("Metadata Label")
         data = {
             k: v["Value"]
             for k, v in df.to_dict(orient="index").items()
